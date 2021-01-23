@@ -1,8 +1,20 @@
 Show Source plugin
-------------------
+==================
+
+[![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/show-source/build)](https://github.com/pelican-plugins/show-source/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-show-source)](https://pypi.org/project/pelican-show-source/)
+![License](https://img.shields.io/pypi/l/pelican-show-source?color=blue)
 
 The plugin allows you to place a link to the source text of your posts in the
 same way that `Sphinx`_ does. It works for both pages and articles.
+
+Installation
+------------
+
+This plugin can be installed via:
+
+    python -m pip install pelican-show-source
+
 
 Plugin Activation
 ~~~~~~~~~~~~~~~~~
@@ -122,6 +134,21 @@ thus:
     posts/2016/10/welcome-to-my article/my_source_file.txt
 
 This is the same behaviour for pages also.
+
+Contributing
+------------
+
+Contributions are welcome and much appreciated. Every little bit helps. You can contribute by improving the documentation, adding missing features, and fixing bugs. You can also help out by reviewing and commenting on [existing issues][].
+
+To start contributing to this plugin, review the [Contributing to Pelican][] documentation, beginning with the **Contributing Code** section.
+
+[existing issues]: https://github.com/pelican-plugins/show-source/issues
+[Contributing to Pelican]: https://docs.getpelican.com/en/latest/contribute.html
+
+License
+-------
+
+This project is licensed under the AGPL-3.0 license.
 
 .. _`Sphinx`: http://www.sphinx-doc.org/
 .. _`pelican-bootstrap3`: https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3
