@@ -1,6 +1,9 @@
 Show Source plugin
 ==================
 
+> :warning: **NOT READY**: This plugin is not ready for use.
+
+
 [![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/show-source/build)](https://github.com/pelican-plugins/show-source/actions)
 [![PyPI Version](https://img.shields.io/pypi/v/pelican-show-source)](https://pypi.org/project/pelican-show-source/)
 ![License](https://img.shields.io/pypi/l/pelican-show-source?color=blue)
