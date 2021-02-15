@@ -1,12 +1,9 @@
 import os
 import logging
-from urlparse import urljoin
-import six
+from urllib.parse import urljoin
+
 from pelican import signals
 from pelican.utils import pelican_open
-
-if not six.PY3:
-    from codecs import open
 
 logger = logging.getLogger(__name__)
 source_files = []
