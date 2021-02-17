@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- #
 import pathlib
 
 thisdir = pathlib.Path(__file__).parent
@@ -26,12 +24,11 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (
-    ("Pelican", "http://getpelican.com/"),
-    ("Python.org", "http://python.org/"),
+    ("Pelican", "https://getpelican.com/"),
+    ("Python.org", "https://python.org/"),
 )
 
 DEFAULT_PAGINATION = 10
-
 
 STATIC_PATHS = []
 
