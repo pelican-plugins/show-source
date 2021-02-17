@@ -15,7 +15,6 @@ def site(tmp_path_factory):
         output,
         "-s",
         datadir / "pelicanconf.py",
-        "-D",
         "--relative-urls",
     ]
     pelican.main([str(a) for a in args])
@@ -24,5 +23,8 @@ def site(tmp_path_factory):
 
 def test_show_source(site):
     tag = "esse-quam-laboriosam-at-accusantium"
+
     assert (site / (tag + ".html")).exists()
-    assert (tag + ".txt") in (site / (tag + ".html")).read_text()
+
+    subtxt = f'<a href="./{tag}.txt">Show source</a>'
+    assert subtxt in (site / (tag + ".html")).read_text()
