@@ -24,7 +24,11 @@ def site(tmp_path_factory):
 def test_show_source(site):
     tag = "esse-quam-laboriosam-at-accusantium"
 
+    # verify the original source has been transferred
+    assert (site / (tag + ".txt")).exists()
+    # and rendered
     assert (site / (tag + ".html")).exists()
 
+    # verify presence of "Show source" reference
     subtxt = f'<a href="./{tag}.txt">Show source</a>'
     assert subtxt in (site / (tag + ".html")).read_text()
