@@ -7,7 +7,7 @@ from pelican.utils import pelican_open
 
 logger = logging.getLogger(__name__)
 source_files = []
-PROCESS = ["articles", "pages", "drafts"]
+TYPES_TO_PROCESS = ["articles", "pages", "drafts"]
 
 
 def link_source_files(generator):
@@ -16,47 +16,65 @@ def link_source_files(generator):
     to destinations, as well as adding a source file URL as an attribute.
     """
     # Get all attributes from the generator that are articles or pages
-    posts = [
-        getattr(generator, attr, None)
-        for attr in PROCESS
-        if getattr(generator, attr, None) is not None
-    ]
+    documents = sum(
+        [
+            getattr(generator, attr, None)
+            for attr in TYPES_TO_PROCESS
+            if getattr(generator, attr, None)
+        ],
+        [],
+    )
+
+    preserve_ext = generator.settings.get("SHOW_SOURCE_PRESERVE_EXTENSION", False)
+
     # Work on each item
-    for post in posts[0]:
-        if (
-            "SHOW_SOURCE_ON_SIDEBAR" not in generator.settings
-            and "SHOW_SOURCE_IN_SECTION" not in generator.settings
+    for post in documents:
+        # condition to show a post
+        if not (
+            generator.settings.get("SHOW_SOURCE_ALL_POSTS")
+            or post.metadata.get("show_source")
         ):
-            return
-        # Only try this when specified in metadata or SHOW_SOURCE_ALL_POSTS
-        # override is present in settings
-        if (
-            "SHOW_SOURCE_ALL_POSTS" in generator.settings
-            or "show_source" in post.metadata
-        ):
-            # Source file name can be optionally set in config
-            show_source_filename = generator.settings.get(
-                "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
+            logger.debug("show_source: sources not shown, aborting plugin")
+            continue
+
+        # Source file name can be optionally set in config
+        show_source_filename = generator.settings.get(
+            "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
+        )
+        try:
+            # Get the full path to the original source file
+            source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
+
+            # Get the path to the original source file
+            source_out_path = os.path.split(source_out)[0]
+
+            # Create 'copy to' destination for writing later
+            copy_to = os.path.join(source_out_path, show_source_filename)
+
+            # Add file to published path
+            source_url = urljoin(post.save_as, show_source_filename)
+        except Exception:
+            logger.error(
+                "show_source: Error processing source file for post", exc_info=True
             )
-            try:
-                # Get the full path to the original source file
-                source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
-                # Get the path to the original source file
-                source_out_path = os.path.split(source_out)[0]
-                # Create 'copy to' destination for writing later
-                copy_to = os.path.join(source_out_path, show_source_filename)
-                # Add file to published path
-                source_url = urljoin(post.save_as, show_source_filename)
-            except Exception:
-                return
-            # Format post source dict & populate
-            out = dict()
-            out["copy_raw_from"] = post.source_path
-            out["copy_raw_to"] = copy_to
-            logger.debug("Linked %s to %s", post.source_path, copy_to)
-            source_files.append(out)
-            # Also add the source path to the post as an attribute for tpls
-            post.show_source_url = source_url
+
+        # Preserve extension, if requested
+        if preserve_ext:
+            __, source_ext = os.path.splitext(post.source_path)
+
+            copy_to_plain_name, __ = os.path.splitext(copy_to)
+            copy_to = copy_to_plain_name + source_ext
+
+            source_url_plain_name, __ = os.path.splitext(source_url)
+            source_url = source_url_plain_name + source_ext
+
+        # Format post source dict & populate
+        out = {"copy_raw_from": post.source_path, "copy_raw_to": copy_to}
+
+        logger.debug("Show Source: Will copy %s to %s", post.source_path, copy_to)
+        source_files.append(out)
+        # Also add the source path to the post as an attribute
+        post.show_source_url = source_url
 
 
 def _copy_from_to(from_file, to_file):
@@ -67,7 +85,7 @@ def _copy_from_to(from_file, to_file):
         encoding = "utf-8"
         with open(to_file, "w", encoding=encoding) as text_out:
             text_out.write(text_in)
-            logger.info("Writing %s", to_file)
+            logger.info("show_source: Writing %s", to_file)
 
 
 def write_source_files(*args, **kwargs):

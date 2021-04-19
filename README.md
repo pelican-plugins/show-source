@@ -21,6 +21,10 @@ Configuration
 
 To enable the plugin, ensure that you have `SHOW_SOURCE_ON_SIDEBAR = True` or `SHOW_SOURCE_IN_SECTION = True` in your settings file.
 
+`SHOW_SOURCE_ALL_POSTS = True` will show the source for all posts, instead of only posts with the source explicitly made available (see below.) By default, this is `False`.
+
+The option `SHOW_SOURCE_PRESERVE_EXTENSION` (`False` by default) controls the extension of the output source file. If `True`, the file will have the same extension as the real source document (`.rst`, `.md`, etc). Otherwise, it will be a plain-text `.txt` file.
+
 Making Source Available for Posts
 ---------------------------------
 
@@ -41,7 +45,7 @@ The plugin will render your source document URL to a corresponding `article.show
 Show Source in the Templates
 ----------------------------
 
-To get the “show source“ links to display in the article or page you will have to modify your theme, either as a sidebar display or at the foot of an article.
+To get the “show source” links to display in the article or page you will have to modify your theme, either as a sidebar display or at the foot of an article.
 
 ### Article or Page Sidebar Display
 

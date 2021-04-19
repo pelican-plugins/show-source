@@ -1,5 +1,7 @@
 import pathlib
 
+from pelican import settings
+
 thisdir = pathlib.Path(__file__).parent
 
 AUTHOR = "Mrs. Joanne Cunningham"
@@ -35,12 +37,18 @@ STATIC_PATHS = []
 PLUGINS = [
     "show_source",
 ]
-SHOW_SOURCE_IN_SECTION = True
-SHOW_SOURCE_ON_SIDEBAR = True
-SHOW_SOURCE_ALL_POSTS = True
+
+THEME = "notmyidea"  # default Pelican theme
+
 THEME_TEMPLATES_OVERRIDES = [
     thisdir / "templates",
 ]
 THEME_TEMPLATES_OVERRIDES = [
     thisdir / "templates",
 ]
+
+pconf = settings.DEFAULT_CONFIG["PCONF"]  # set in test_show_source.py
+SHOW_SOURCE_PRESERVE_EXTENSION = pconf.SHOW_SOURCE_PRESERVE_EXTENSION
+SHOW_SOURCE_ON_SIDEBAR = pconf.SHOW_SOURCE_ON_SIDEBAR
+SHOW_SOURCE_IN_SECTION = pconf.SHOW_SOURCE_IN_SECTION
+SHOW_SOURCE_ALL_POSTS = pconf.SHOW_SOURCE_ALL_POSTS
