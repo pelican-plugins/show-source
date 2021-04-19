@@ -58,7 +58,9 @@ def link_source_files(generator):
                 # Add file to published path
                 source_url = urljoin(post.save_as, show_source_filename)
             except Exception:
-                logger.error("Error processing source file for post", exc_info=True)
+                logger.error(
+                    "show_source: Error processing source file for post", exc_info=True
+                )
 
             # Automatically set extension, if requested
             if autoext_setting:
@@ -73,7 +75,7 @@ def link_source_files(generator):
             # Format post source dict & populate
             out = {"copy_raw_from": post.source_path, "copy_raw_to": copy_to}
 
-            logger.debug("Will copy %s to %s", post.source_path, copy_to)
+            logger.debug("show_source: Will copy %s to %s", post.source_path, copy_to)
             source_files.append(out)
             # Also add the source path to the post as an attribute for tpls
             post.show_source_url = source_url
@@ -87,7 +89,7 @@ def _copy_from_to(from_file, to_file):
         encoding = "utf-8"
         with open(to_file, "w", encoding=encoding) as text_out:
             text_out.write(text_in)
-            logger.info("Writing %s", to_file)
+            logger.info("show_source: Writing %s", to_file)
 
 
 def write_source_files(*args, **kwargs):
