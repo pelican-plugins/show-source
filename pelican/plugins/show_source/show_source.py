@@ -1,17 +1,13 @@
 import logging
 import os
-import six
 
 from pelican import signals
 from pelican.utils import pelican_open
-from six.moves.urllib.parse import urljoin
-
-if not six.PY3:
-    from codecs import open
+from urllib.parse import urljoin
 
 logger = logging.getLogger(__name__)
 source_files = []
-TYPES_TO_PROCESS = ['articles', 'pages']
+TYPES_TO_PROCESS = ["articles", "pages", "drafts"]
 
 def link_source_files(generator):
     """
