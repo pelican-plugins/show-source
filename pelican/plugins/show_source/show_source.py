@@ -1,9 +1,10 @@
-import os
 import logging
-from six.moves.urllib.parse import urljoin
+import os
 import six
+
 from pelican import signals
 from pelican.utils import pelican_open
+from six.moves.urllib.parse import urljoin
 
 if not six.PY3:
     from codecs import open
