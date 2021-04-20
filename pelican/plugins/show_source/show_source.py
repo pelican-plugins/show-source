@@ -33,52 +33,55 @@ def link_source_files(generator):
             "SHOW_SOURCE_ON_SIDEBAR" in generator.settings
             or "SHOW_SOURCE_IN_SECTION" in generator.settings
         ):
+            logger.debug(f"show_source: sources not shown, aborting plugin")
             return
 
         # Only try this when specified in metadata or SHOW_SOURCE_ALL_POSTS
         # override is present in settings
-        if (
-            "SHOW_SOURCE_ALL_POSTS" in generator.settings
-            or "show_source" in post.metadata
-        ):
-            # Source file name can be optionally set in config
-            show_source_filename = generator.settings.get(
-                "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
+        if "SHOW_SOURCE_ALL_POSTS" not in generator.settings:
+            # If we ever skip posts...
+            if "show_source" not in post.metadata:
+                # And this post isn't explicitly shown, skip to the next post.
+                continue
+
+        # Source file name can be optionally set in config
+        show_source_filename = generator.settings.get(
+            "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
+        )
+        try:
+            # Get the full path to the original source file
+            source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
+
+            # Get the path to the original source file
+            source_out_path = os.path.split(source_out)[0]
+
+            # Create 'copy to' destination for writing later
+            copy_to = os.path.join(source_out_path, show_source_filename)
+
+            # Add file to published path
+            source_url = urljoin(post.save_as, show_source_filename)
+        except Exception:
+            logger.error(
+                "show_source: Error processing source file for post", exc_info=True
             )
-            try:
-                # Get the full path to the original source file
-                source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
 
-                # Get the path to the original source file
-                source_out_path = os.path.split(source_out)[0]
+        # Automatically set extension, if requested
+        if autoext_setting:
+            __, source_ext = os.path.splitext(post.source_path)
 
-                # Create 'copy to' destination for writing later
-                copy_to = os.path.join(source_out_path, show_source_filename)
+            copy_to_plain_name, __ = os.path.splitext(copy_to)
+            copy_to = copy_to_plain_name + source_ext
 
-                # Add file to published path
-                source_url = urljoin(post.save_as, show_source_filename)
-            except Exception:
-                logger.error(
-                    "show_source: Error processing source file for post", exc_info=True
-                )
+            source_url_plain_name, __ = os.path.splitext(source_url)
+            source_url = source_url_plain_name + source_ext
 
-            # Automatically set extension, if requested
-            if autoext_setting:
-                __, source_ext = os.path.splitext(post.source_path)
+        # Format post source dict & populate
+        out = {"copy_raw_from": post.source_path, "copy_raw_to": copy_to}
 
-                copy_to_plain_name, __ = os.path.splitext(copy_to)
-                copy_to = copy_to_plain_name + source_ext
-
-                source_url_plain_name, __ = os.path.splitext(source_url)
-                source_url = source_url_plain_name + source_ext
-
-            # Format post source dict & populate
-            out = {"copy_raw_from": post.source_path, "copy_raw_to": copy_to}
-
-            logger.debug("show_source: Will copy %s to %s", post.source_path, copy_to)
-            source_files.append(out)
-            # Also add the source path to the post as an attribute for tpls
-            post.show_source_url = source_url
+        logger.debug("show_source: Will copy %s to %s", post.source_path, copy_to)
+        source_files.append(out)
+        # Also add the source path to the post as an attribute for tpls
+        post.show_source_url = source_url
 
 
 def _copy_from_to(from_file, to_file):
