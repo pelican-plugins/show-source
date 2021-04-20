@@ -33,7 +33,7 @@ def link_source_files(generator):
             "SHOW_SOURCE_ON_SIDEBAR" in generator.settings
             or "SHOW_SOURCE_IN_SECTION" in generator.settings
         ):
-            logger.debug(f"show_source: sources not shown, aborting plugin")
+            logger.debug("show_source: sources not shown, aborting plugin")
             return
 
         # Only try this when specified in metadata or SHOW_SOURCE_ALL_POSTS
