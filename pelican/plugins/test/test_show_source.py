@@ -42,7 +42,7 @@ FLAGS = [
 ]
 
 @pytest.mark.parametrize("site", FLAGS, indirect=["site"])
-def test_xxx(site):
+def test_site(site):
     from pelican import settings
 
     pconf = settings.DEFAULT_CONFIG["PCONF"]
