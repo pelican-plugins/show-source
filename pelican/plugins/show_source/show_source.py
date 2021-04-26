@@ -29,20 +29,13 @@ def link_source_files(generator):
 
     # Work on each item
     for post in documents:
+        # condition to show a post
         if not (
-            "SHOW_SOURCE_ON_SIDEBAR" in generator.settings
-            or "SHOW_SOURCE_IN_SECTION" in generator.settings
+            generator.settings.get("SHOW_SOURCE_ALL_POSTS")
+            or post.metadata.get("show_source")
         ):
             logger.debug("show_source: sources not shown, aborting plugin")
-            return
-
-        # Only try this when specified in metadata or SHOW_SOURCE_ALL_POSTS
-        # override is present in settings
-        if "SHOW_SOURCE_ALL_POSTS" not in generator.settings:
-            # If we ever skip posts...
-            if "show_source" not in post.metadata:
-                # And this post isn't explicitly shown, skip to the next post.
-                continue
+            continue
 
         # Source file name can be optionally set in config
         show_source_filename = generator.settings.get(
