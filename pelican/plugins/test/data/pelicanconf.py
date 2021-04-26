@@ -36,6 +36,9 @@ STATIC_PATHS = []
 PLUGINS = [
     "show_source",
 ]
+
+THEME = "notmyidea" # default embedded pelican theme
+
 THEME_TEMPLATES_OVERRIDES = [
     thisdir / "templates",
 ]
