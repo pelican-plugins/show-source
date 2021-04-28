@@ -23,7 +23,7 @@ To enable the plugin, ensure that you have `SHOW_SOURCE_ON_SIDEBAR = True` or `S
 
 `SHOW_SOURCE_ALL_POSTS = True` will show the source for all posts, instead of only posts with the source explicitly made available (see below.) By default, this is `False`.
 
-The option `SHOW_SOURCE_AUTOEXT` (`False` by default) controls the extension of the output source file. If `True`, the file will have the same extension as the real source document (`.rst`, `.md`, etc). Otherwise, it will be a plain-text `.txt` file. 
+The option `SHOW_SOURCE_AUTOEXT` (`False` by default) controls the extension of the output source file. If `True`, the file will have the same extension as the real source document (`.rst`, `.md`, etc). Otherwise, it will be a plain-text `.txt` file.
 
 Making Source Available for Posts
 ---------------------------------
@@ -131,6 +131,23 @@ To start contributing to this plugin, review the [Contributing to Pelican][] doc
 
 [existing issues]: https://github.com/pelican-plugins/show-source/issues
 [Contributing to Pelican]: https://docs.getpelican.com/en/latest/contribute.html
+
+Testing
+-------
+
+The testing is done using pytest (from the clone/checkout directory).
+
+Linux/Mac:
+```shell
+PYTHONPATH=. py.test -vvs pelican/plugins/test/test_show_source.py
+```
+Windows:
+```dos
+SET PYTHONPATH=%CD%
+py.test -vvs pelican\plugins\test\test_show_source.py
+```
+
+> **_NOTE:_** If your python environment has installed pelican-show-source you need to uninstall it first.
 
 License
 -------
