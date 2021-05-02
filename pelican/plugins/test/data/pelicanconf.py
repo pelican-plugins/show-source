@@ -37,7 +37,7 @@ PLUGINS = [
     "show_source",
 ]
 
-THEME = "notmyidea" # default embedded pelican theme
+THEME = "notmyidea"  # default embedded pelican theme
 
 THEME_TEMPLATES_OVERRIDES = [
     thisdir / "templates",
@@ -46,7 +46,7 @@ THEME_TEMPLATES_OVERRIDES = [
     thisdir / "templates",
 ]
 
-pconf = settings.DEFAULT_CONFIG["PCONF"] # set in the test_show_source.py
+pconf = settings.DEFAULT_CONFIG["PCONF"]  # set in the test_show_source.py
 SHOW_SOURCE_AUTOEXT = pconf.SHOW_SOURCE_AUTOEXT
 SHOW_SOURCE_ON_SIDEBAR = pconf.SHOW_SOURCE_ON_SIDEBAR
 SHOW_SOURCE_IN_SECTION = pconf.SHOW_SOURCE_IN_SECTION
