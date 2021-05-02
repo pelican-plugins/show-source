@@ -50,12 +50,7 @@ def site(request, tmp_path_factory):
 
 
 FLAGS = [
-    (
-        p,
-        False,
-        True,
-        False,
-    )
+    (p, False, True, False,)
     for p, in sorted(itertools.product([True, False], repeat=1))
 ]
 

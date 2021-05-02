@@ -1,4 +1,5 @@
 import pathlib
+
 from pelican import settings
 
 thisdir = pathlib.Path(__file__).parent
