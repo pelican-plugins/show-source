@@ -25,7 +25,7 @@ def link_source_files(generator):
         [],
     )
 
-    autoext_setting = generator.settings.get("SHOW_SOURCE_AUTOEXT", False)
+    preserve_ext = generator.settings.get("SHOW_SOURCE_PRESERVE_EXTENSION", False)
 
     # Work on each item
     for post in documents:
@@ -58,8 +58,8 @@ def link_source_files(generator):
                 "show_source: Error processing source file for post", exc_info=True
             )
 
-        # Automatically set extension, if requested
-        if autoext_setting:
+        # Preserve extension, if requested
+        if preserve_ext:
             __, source_ext = os.path.splitext(post.source_path)
 
             copy_to_plain_name, __ = os.path.splitext(copy_to)
@@ -71,9 +71,9 @@ def link_source_files(generator):
         # Format post source dict & populate
         out = {"copy_raw_from": post.source_path, "copy_raw_to": copy_to}
 
-        logger.debug("show_source: Will copy %s to %s", post.source_path, copy_to)
+        logger.debug("Show Source: Will copy %s to %s", post.source_path, copy_to)
         source_files.append(out)
-        # Also add the source path to the post as an attribute for tpls
+        # Also add the source path to the post as an attribute
         post.show_source_url = source_url
 
 

@@ -10,7 +10,7 @@ import pelican
 
 # makes easier to handle flags
 class Flags(enum.IntEnum):
-    SHOW_SOURCE_AUTOEXT = 0
+    SHOW_SOURCE_PRESERVE_EXTENSION = 0
     SHOW_SOURCE_ALL_POSTS = 1
     SHOW_SOURCE_ON_SIDEBAR = 2
     SHOW_SOURCE_IN_SECTION = 3
@@ -41,7 +41,7 @@ def site(request, tmp_path_factory):
     pelican.main([str(a) for a in args])
 
     # write a file with a name like (for troubleshooting):
-    #  AUTOEXT=0-ALL_POSTS=1-ON_SIDEBAR=0-IN_SECTION=1
+    #  PRESERVE_EXTENSION=0-ALL_POSTS=1-ON_SIDEBAR=0-IN_SECTION=1
     (
         output
         / "-".join(f"{k[12:]}={int(v)}" for k, v in zip(Pconf._fields, request.param))
@@ -50,14 +50,19 @@ def site(request, tmp_path_factory):
 
 
 FLAGS = [
-    (p, False, True, False,)
+    (
+        p,
+        False,
+        True,
+        False,
+    )
     for p, in sorted(itertools.product([True, False], repeat=1))
 ]
 
 
 @pytest.mark.parametrize("site", FLAGS, indirect=["site"])
-def test_autoext(site):
-    "test the SHOW_SOURCE_AUTOEXT writes the correct file extension"
+def test_preserve_extension(site):
+    """Test that SHOW_SOURCE_PRESERVE_EXTENSION writes the correct file extension."""
     from pelican import settings
 
     pconf = settings.DEFAULT_CONFIG["PCONF"]
@@ -65,7 +70,7 @@ def test_autoext(site):
     tag = "esse-quam-laboriosam-at-accusantium"
 
     # verify extension flags
-    src_extension = ".md" if pconf.SHOW_SOURCE_AUTOEXT else ".txt"
+    src_extension = ".md" if pconf.SHOW_SOURCE_PRESERVE_EXTENSION else ".txt"
 
     # verify the page has been rendered
     assert (site / (tag + ".html")).exists()
@@ -80,13 +85,13 @@ FLAGS = [
 
 @pytest.mark.parametrize("site", FLAGS, indirect=["site"])
 def test_site(site):
-    "test all the possible flags use"
+    """Test use of all possible flags."""
     from pelican import settings
 
     pconf = settings.DEFAULT_CONFIG["PCONF"]
 
     tag = "esse-quam-laboriosam-at-accusantium"
-    src_extension = ".md" if pconf.SHOW_SOURCE_AUTOEXT else ".txt"
+    src_extension = ".md" if pconf.SHOW_SOURCE_PRESERVE_EXTENSION else ".txt"
 
     # files have the inline show source?
     has_insection = []
