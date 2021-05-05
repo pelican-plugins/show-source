@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pelican-show-source"
-version = "1.0.0"
+version = "1.1.0"
 description = "Pelican plugin that adds a link to post source content"
 authors = ["Pelican Dev Team <authors@getpelican.com>", "Chris Ramsay <chris.ramsay@thesalegroup.co.uk>"]
 license = "AGPL-3.0"

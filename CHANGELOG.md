@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.1.0 - 2021-05-05
+------------------
+
+Add setting to preserve source file extensions.
+
 1.0.0 - 2021-02-16
 ------------------
 
