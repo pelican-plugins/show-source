@@ -1,7 +1,7 @@
 Show Source: A Plugin for Pelican
 =================================
 
-[![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/show-source/build)](https://github.com/pelican-plugins/show-source/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/show-source/main.yml?branch=main)](https://github.com/pelican-plugins/show-source/actions)
 [![PyPI Version](https://img.shields.io/pypi/v/pelican-show-source)](https://pypi.org/project/pelican-show-source/)
 ![License](https://img.shields.io/pypi/l/pelican-show-source?color=blue)
 
