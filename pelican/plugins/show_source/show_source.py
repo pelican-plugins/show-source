@@ -4,6 +4,8 @@ from urllib.parse import urljoin
 
 from pelican import signals
 from pelican.utils import pelican_open
+import functools
+import operator
 
 logger = logging.getLogger(__name__)
 source_files = []
@@ -16,14 +18,11 @@ def link_source_files(generator):
     to destinations, as well as adding a source file URL as an attribute.
     """
     # Get all attributes from the generator that are articles or pages
-    documents = sum(
-        [
-            getattr(generator, attr, None)
-            for attr in TYPES_TO_PROCESS
-            if getattr(generator, attr, None)
-        ],
-        [],
-    )
+    documents = functools.reduce(operator.iadd, (
+        getattr(generator, attr, None)
+        for attr in TYPES_TO_PROCESS
+        if getattr(generator, attr, None)
+    ), [])
 
     preserve_ext = generator.settings.get("SHOW_SOURCE_PRESERVE_EXTENSION", False)
 
