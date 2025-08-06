@@ -4,10 +4,12 @@ from urllib.parse import urljoin
 
 from pelican import signals
 from pelican.utils import pelican_open
+import functools
+import operator
 
 logger = logging.getLogger(__name__)
 source_files = []
-TYPES_TO_PROCESS = ["articles", "pages", "drafts"]
+TYPES_TO_PROCESS = ["articles", "pages", "hidden_pages", "drafts"]
 
 
 def link_source_files(generator):
@@ -16,14 +18,11 @@ def link_source_files(generator):
     to destinations, as well as adding a source file URL as an attribute.
     """
     # Get all attributes from the generator that are articles or pages
-    documents = sum(
-        [
-            getattr(generator, attr, None)
-            for attr in TYPES_TO_PROCESS
-            if getattr(generator, attr, None)
-        ],
-        [],
-    )
+    documents = functools.reduce(operator.iadd, (
+        getattr(generator, attr, None)
+        for attr in TYPES_TO_PROCESS
+        if getattr(generator, attr, None)
+    ), [])
 
     preserve_ext = generator.settings.get("SHOW_SOURCE_PRESERVE_EXTENSION", False)
 
@@ -37,10 +36,13 @@ def link_source_files(generator):
             logger.debug("show_source: sources not shown, aborting plugin")
             continue
 
-        # Source file name can be optionally set in config
+        # Source file name can be optionally set in config.
+        # Otherwise, the post's slug is used.
         show_source_filename = generator.settings.get(
             "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
         )
+        show_source_filename = show_source_filename.replace('/', '')
+
         try:
             # Get the full path to the original source file
             source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
@@ -57,6 +59,7 @@ def link_source_files(generator):
             logger.error(
                 "show_source: Error processing source file for post", exc_info=True
             )
+            continue
 
         # Preserve extension, if requested
         if preserve_ext:
