@@ -37,10 +37,13 @@ def link_source_files(generator):
             logger.debug("show_source: sources not shown, aborting plugin")
             continue
 
-        # Source file name can be optionally set in config
+        # Source file name can be optionally set in config.
+        # Otherwise, the post's slug is used.
         show_source_filename = generator.settings.get(
             "SHOW_SOURCE_FILENAME", "{}.txt".format(post.slug)
         )
+        show_source_filename = show_source_filename.replace('/', '')
+
         try:
             # Get the full path to the original source file
             source_out = os.path.join(post.settings["OUTPUT_PATH"], post.save_as)
