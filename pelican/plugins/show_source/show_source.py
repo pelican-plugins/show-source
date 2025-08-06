@@ -60,6 +60,7 @@ def link_source_files(generator):
             logger.error(
                 "show_source: Error processing source file for post", exc_info=True
             )
+            continue
 
         # Preserve extension, if requested
         if preserve_ext:
